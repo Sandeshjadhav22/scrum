@@ -1,7 +1,8 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import { Inter } from 'next/font/google'
 
-
+const inter = Inter
 
 export const metadata = {
   title: "Zscrum",
@@ -11,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={``}>
+      <body className={`${inter.className}`}>
         <ThemeProvider attribute="class" defaultTheme="dark">
           {children}
         </ThemeProvider>
