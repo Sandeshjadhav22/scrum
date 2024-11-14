@@ -2,14 +2,14 @@ import React from "react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-// import { checkUser } from "@/lib/checkUser";
 // import UserMenu from "./user-menu";
 import { Button } from "./ui/button";
 import { PenBox } from "lucide-react";
 import UserMenu from "./user-menu";
+import { checkUser } from "@/lib/checkUser";
 
-async function Header() {
-  //   await checkUser();
+const Header = async () => {
+  await checkUser();
 
   return (
     <header className=" container mx-auto">
@@ -33,18 +33,18 @@ async function Header() {
           </Link>
           <SignedOut>
             <SignInButton forceRedirectUrl="/onboarding">
-            <Button variant="outline">Login</Button>
+              <Button variant="outline">Login</Button>
             </SignInButton>
           </SignedOut>
 
           <SignedIn>
             {/* <UserButton /> */}
-            <UserMenu/>
+            <UserMenu />
           </SignedIn>
         </div>
       </nav>
     </header>
   );
-}
+};
 
 export default Header;
