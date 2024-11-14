@@ -87,7 +87,7 @@ const CreateProjectPage = () => {
             <p className=" text-red-500 text-sm mt-1">{errors.description.message}</p>
           )}
         </div>
-        <Button type="submit" size="lg" className="bg-blue-500 text-white">Create Project</Button>
+        <Button type="submit" size="lg" className="bg-blue-500 text-white hover:bg-blue-400">Create Project</Button>
       </form>
     </div>
   );
