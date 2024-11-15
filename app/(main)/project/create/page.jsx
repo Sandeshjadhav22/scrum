@@ -8,11 +8,16 @@ import { projectSchema } from "@/app/lib/validators";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import useFetch from "@/hooks/use-fetch";
+import { createProject } from "@/actions/projects";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const CreateProjectPage = () => {
   const { isLoaded: isOrgLoaded, membership } = useOrganization();
   const { isLoaded: isUserLoaded } = useUser();
   const [isAdmin, setIsAdmin] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -28,13 +33,27 @@ const CreateProjectPage = () => {
     }
   }, [isOrgLoaded, isUserLoaded, membership]);
 
+  const {
+    data: project,
+    loading,
+    error,
+    fn: createProjectFn,
+  } = useFetch(createProject);
+
+  useEffect(() => {
+    if (project) {
+      toast.success("Project created successfully");
+      router.push(`/project/${project.id}`);
+    }
+  }, [loading]);
+
   if (!isOrgLoaded || !isUserLoaded) {
     return null;
   }
 
-  const onSubmit= async()=> {
-
-  }
+  const onSubmit = async (data) => {
+    createProjectFn(data);
+  };
 
   if (!isAdmin) {
     return (
@@ -51,7 +70,10 @@ const CreateProjectPage = () => {
       <h1 className="text-6xl text-center font-bold mb-8 gradient-title">
         Create new Project
       </h1>
-      <form className="flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="flex flex-col space-y-4"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div>
           <Input
             id="name"
@@ -84,10 +106,22 @@ const CreateProjectPage = () => {
             {...register("description")}
           />
           {errors.description && (
-            <p className=" text-red-500 text-sm mt-1">{errors.description.message}</p>
+            <p className=" text-red-500 text-sm mt-1">
+              {errors.description.message}
+            </p>
           )}
         </div>
-        <Button type="submit" size="lg" className="bg-blue-500 text-white hover:bg-blue-400">Create Project</Button>
+        <Button
+          disabled={loading}
+          type="submit"
+          size="lg"
+          className="bg-blue-500 text-white hover:bg-blue-400"
+        >
+          {loading ? "Creating..." : "Create Project"}
+        </Button>
+        {errors && (
+          <p className=" text-red-500 text-sm mt-1">{errors.message}</p>
+        )}
       </form>
     </div>
   );

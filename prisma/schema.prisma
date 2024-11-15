@@ -30,13 +30,13 @@ model Project {
   name           String
   key            String
   description    String?
-  organisationId String
+  organizationId String
   sprints        Sprint[]
   issues         Issue[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  @@unique([organisationId, key]) //on one organisation only one key will be there
+  @@unique([organizationId, key]) //on one organisation only one key will be there
 }
 
 model Sprint {
