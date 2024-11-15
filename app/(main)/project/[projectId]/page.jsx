@@ -1,9 +1,19 @@
-import React from 'react'
+import { getProject } from "@/actions/projects";
+import { notFound } from "next/navigation";
+import React from "react";
 
-const ProjectPage = () => {
-  return (
-    <div>ProjectPage</div>
-  )
-}
+const ProjectPage = async({ params }) => {
+  const { projectId } = params;
+  const project = await getProject(projectId)
 
-export default ProjectPage
+  if(!project){
+    notFound()
+  }
+  return <div>
+    {/* Sprint Creation */}
+
+    {/* Sprint Board */}
+  </div>;
+};
+
+export default ProjectPage;
