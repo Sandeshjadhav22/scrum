@@ -6,6 +6,8 @@ import statuses from "@/data/status";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import IssueCreationDrawer from "./create-issue";
+import useFetch from "@/hooks/use-fetch";
+import { getIssuesForSprint } from "@/actions/issues";
 
 const SprintBoard = ({ sprints, projectId, orgId }) => {
   const [currentSprint, setCurrentSprint] = useState(
@@ -14,6 +16,16 @@ const SprintBoard = ({ sprints, projectId, orgId }) => {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
+
+  const {
+    loading: issuesLoading,
+    error: issuesError,
+    fn: fetchIssues,
+    data: issues,
+    setData: setIssues,
+  } = useFetch(getIssuesForSprint);
+
+  const [filteredIssues, setFilteredIssues] = useState(issues);
 
 
   const handleAddIssue = (status)=>{
