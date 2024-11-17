@@ -26,7 +26,7 @@ const ProjectPage = async ({ params }) => {
         <SprintBoard
         sprints={project.sprints}
         projectId={projectId}
-        ordId={project.organizationId}
+        orgId={project.organizationId}
         />
       ) : (
         <div> Create a sprent from above button</div>
