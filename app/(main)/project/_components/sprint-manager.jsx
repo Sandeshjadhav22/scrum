@@ -13,12 +13,12 @@ import { BarLoader } from "react-spinners";
 import { Badge } from "@/components/ui/badge";
 import { updateSprintStatus } from "@/actions/sprints";
 import useFetch from "@/hooks/use-fetch";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SprintManager = ({ sprint, setSprint, sprints, projectId }) => {
   const [status, setStatus] = useState(sprint.status);
   const router = useRouter();
-//   const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
 
 
   const {
@@ -61,6 +61,17 @@ const SprintManager = ({ sprint, setSprint, sprints, projectId }) => {
     }
     return null;
   };
+
+  useEffect(() => {
+    const sprintId = searchParams.get("sprint");
+    if (sprintId && sprintId !== sprint.id) {
+      const selectedSprint = sprints.find((s) => s.id === sprintId);
+      if (selectedSprint) {
+        setSprint(selectedSprint);
+        setStatus(selectedSprint.status);
+      }
+    }
+  }, [searchParams, sprints]);
 
   const handleSprintChange = (value) => {
     const selectedSprint = sprints.find((s) => s.id === value);
